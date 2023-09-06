@@ -1,0 +1,22 @@
+.notepad-container {
+  width: 100%;
+  height: 100%;
+}
+h1 {
+  background-color: #94a3b8;
+  padding: 0.5em 0;
+  text-align: center;
+  font-weight: 700;
+  font-size: 2rem;
+  font-family: Helvetica;
+  color: white;
+}
+.canvas-container {
+  display: flex;
+  width: 100%;
+}
+canvas {
+  background-image: url("../../../public/hud-grid-pattern-background-04_758394-54.avif");
+  width: 100%;
+  height: 100%;
+}
