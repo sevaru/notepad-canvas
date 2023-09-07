@@ -31,13 +31,17 @@ export function handleCanvas(canvas: HTMLCanvasElement) {
   canvas.addEventListener("click", (event) => {
     event.preventDefault();
     if (
-      rectangleList.length < 4 &&
+      rectangleList.length < 3 &&
       !findRectangle(rectangleList, event.offsetX, event.offsetY).flag
     ) {
       let rectangle = new Rectangle(event.offsetX, event.offsetY);
       rectangle.draw(canvas);
       rectangleList.push({ ...rectangle });
     }
+
+    console.log(
+      !findRectangle(rectangleList, event.offsetX, event.offsetY).flag
+    );
   });
 }
 function findRectangle(rectangleList: Rectangle[], x: number, y: number) {
@@ -47,8 +51,8 @@ function findRectangle(rectangleList: Rectangle[], x: number, y: number) {
   };
   rectangleList.forEach((item) => {
     if (
-      item.startX! < x &&
-      item.endX! > x &&
+      item.startX! - 80 < x &&
+      item.endX! - 80 > x &&
       item.startY! < y &&
       item.endY! > y
     ) {
