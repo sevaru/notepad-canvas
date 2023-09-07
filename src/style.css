@@ -108,7 +108,36 @@ label {
 legend {
   display: block;
 }
-/* #app {
-  height: 100vh;
-  background-color: brown;
+/* canvas */
+.notepad-container {
+  width: 100%;
+  height: 100%;
+}
+h1 {
+  background-color: #94a3b8;
+  padding: 0.5em 0;
+  text-align: center;
+  font-weight: 700;
+  font-size: 2rem;
+  font-family: Helvetica;
+  color: white;
+}
+
+canvas {
+  background-image: url("../../../public/hud-grid-pattern-background-04_758394-54.avif");
+  width: 100%;
+  height: 100%;
+}
+.canvas-container {
+  position: relative;
+  /* background-color: antiquewhite; */
+}
+/* .canvas-card {
+  position: absolute;
+  left: 79px;
+  top: 71px;
+  width: 160px;
+  height: 180px;
+  z-index: 10;
+  background-color: aqua;
 } */

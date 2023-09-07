@@ -1,10 +1,17 @@
 import "./style.css";
-import { Canvas } from "./Components/Canvas/canvas";
-import { PaintCanvas } from "./Components/Canvas/PaintCanvas";
+
+import { handleCanvas } from "./Components/Canvas/PaintCanvas";
 document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
   <div>
-    ${Canvas()}  
+  <div class="notepad-container">
+  <h1>Canvas Notepad</h1>
+  <div class="canvas-container">
+  <canvas id="canvas"></canvas>
+  </div>
+  </div>
   </div>
 `;
 
-PaintCanvas(document.querySelector<HTMLCanvasElement>("canvas")!);
+handleCanvas(document.querySelector<HTMLCanvasElement>("canvas")!);
+// <canvas id="canvas"></canvas>
+// <div class="canvas-card"></div>
