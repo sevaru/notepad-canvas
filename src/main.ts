@@ -1,6 +1,7 @@
 import "./style.css";
 
-import { handleCanvas } from "./Components/Canvas/PaintCanvas";
+// import { handleCanvas } from "./Components/Canvas/PaintCanvas";
+import { handleCanvas } from "./Components/Canvas/HandleCanvas";
 document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
   <div>
   <div class="notepad-container">

@@ -1,4 +1,4 @@
-import { Rectangle } from "../../types";
+import { Rectangle } from "./../../types/index";
 const rectangleList: Rectangle[] = [];
 let rectangle: Rectangle = {
   id: null,
@@ -12,10 +12,11 @@ let rectangle: Rectangle = {
 export function handleCanvas(canvas: HTMLCanvasElement) {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
+
   canvas.addEventListener("click", (event) => {
     event.preventDefault();
     if (
-      rectangleList.length < 1 &&
+      rectangleList.length < 4 &&
       !findRectangle(rectangleList, event.offsetX, event.offsetY).flag
     ) {
       rectangle.startX = event.offsetX - 80;
