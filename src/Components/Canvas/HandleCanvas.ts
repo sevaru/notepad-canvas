@@ -20,7 +20,7 @@ class Rectangle {
   draw = (canvas: HTMLCanvasElement) => {
     let ctx = canvas.getContext("2d")!;
     ctx.beginPath();
-    ctx.fillRect(this.startX - 80, this.startY, this.width, this.height);
+    ctx.fillRect(this.startX, this.startY, this.width, this.height);
     ctx.stroke();
     ctx.closePath();
   };
@@ -31,18 +31,16 @@ export function handleCanvas(canvas: HTMLCanvasElement) {
   canvas.addEventListener("click", (event) => {
     event.preventDefault();
     if (
-      rectangleList.length < 3 &&
+      rectangleList.length < 1 &&
       !findRectangle(rectangleList, event.offsetX, event.offsetY).flag
     ) {
       let rectangle = new Rectangle(event.offsetX, event.offsetY);
       rectangle.draw(canvas);
       rectangleList.push({ ...rectangle });
     }
-
-    console.log(
-      !findRectangle(rectangleList, event.offsetX, event.offsetY).flag
-    );
   });
+  handlerOnPressedButton(canvas, findRectangle);
+  return;
 }
 function findRectangle(rectangleList: Rectangle[], x: number, y: number) {
   let rectangle = {
@@ -51,8 +49,8 @@ function findRectangle(rectangleList: Rectangle[], x: number, y: number) {
   };
   rectangleList.forEach((item) => {
     if (
-      item.startX! - 80 < x &&
-      item.endX! - 80 > x &&
+      item.startX! < x &&
+      item.endX! > x &&
       item.startY! < y &&
       item.endY! > y
     ) {
@@ -61,4 +59,28 @@ function findRectangle(rectangleList: Rectangle[], x: number, y: number) {
     }
   });
   return rectangle;
+}
+// Обработчик на нажатую кнопку кнопку
+function handlerOnPressedButton(canvas: HTMLCanvasElement, findRectangle: any) {
+  let isMousePressed = false;
+  const handle = (event: MouseEvent) => {
+    if (isMousePressed) {
+      console.log("нажата");
+    }
+  };
+
+  canvas.addEventListener("mousedown", (event: any) => {
+    if (event.button === 0) {
+      isMousePressed = true; // Кнопка мыши нажата
+    }
+  });
+  canvas.addEventListener("mouseup", function (event: any) {
+    if (event.button === 0) {
+      isMousePressed = false; // Кнопка мыши отпущена
+
+      canvas.removeEventListener("mousemove", handle);
+    }
+  });
+
+  canvas.addEventListener("mousemove", handle);
 }
