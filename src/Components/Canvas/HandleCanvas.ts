@@ -9,8 +9,8 @@ class Rectangle {
   endY: number;
   width: number;
   height: number;
-  constructor(x: number, y: number) {
-    this.id = Math.floor(Math.random() * 10);
+  constructor(x: number, y: number, id: number) {
+    this.id = id;
     this.startX = x - 80;
     this.endX = x + 80;
     this.startY = y;
@@ -26,18 +26,27 @@ class Rectangle {
     ctx.closePath();
   };
   updated = (x: number, y: number) => {
+    // if (w < x) {
+    //   console.log("Юольше");
+    //   this.startX += (x - this.startX) * 1 - 80;
+    //   this.endX += (x - this.startX) * 1 + 80;
+    //   this.startY += (y - this.startY) * 1 - 90;
+    //   this.endY += (y - this.startY) * 1 + 90;
+    // } else {
+    //   console.log("Меньше");
+    //   this.startX -= (x - this.startX) * -1 + 80;
+    //   this.endX -= (x - this.startX) * -1 - 80;
+    //   this.startY -= (y - this.startY) * 1 + 90;
+    //   this.endY -= (y - this.startY) * 1 - 90;
+    // }
     this.startX = x - 80;
     this.endX = x + 80;
-    this.startY = y;
-    this.endY = y + 180;
+    this.startY = y - 90;
+    this.endY = y + 90;
     this.width = 160;
     this.height = 180;
   };
-  retWidth = () => {
-    let width = this.startX;
-    let height = this.startY;
-    return { width, height };
-  };
+
   wipeOf = (canvas: HTMLCanvasElement) => {
     let ctx = canvas.getContext("2d")!;
     ctx.clearRect(this.startX, this.startY, 160, 180);
@@ -49,16 +58,12 @@ export function handleCanvas(canvas: HTMLCanvasElement) {
 
   let activeMove = false;
   let idElement: number;
-
+  let id = 0;
   function handleMouseDown(event: MouseEvent) {
     let c = rectangleList.find((item) => item.id === idElement);
     c?.wipeOf(canvas);
     c!.updated(event.offsetX, event.offsetY);
     c!.draw(canvas);
-    c!.startX = event.offsetX - 80;
-    c!.endX = event.offsetX + 80;
-    c!.startY = event.offsetY;
-    c!.endY = event.offsetY + 180;
     rectangleList.forEach((item) => item.draw(canvas));
   }
 
@@ -79,9 +84,9 @@ export function handleCanvas(canvas: HTMLCanvasElement) {
       !findRectangle(rectangleList, event.offsetX, event.offsetY).flag &&
       !activeMove
     ) {
-      let rectangle = new Rectangle(event.offsetX, event.offsetY);
+      let rectangle = new Rectangle(event.offsetX, event.offsetY, (id += 1));
       rectangle.draw(canvas);
-      rectangleList.push({ ...rectangle });
+      rectangleList.push(rectangle);
     }
     canvas.removeEventListener("mousemove", handleMouseDown);
     activeMove = false;
@@ -107,29 +112,3 @@ function findRectangle(rectangleList: Rectangle[], x: number, y: number) {
   });
   return rectangle;
 }
-
-// Обработчик на нажатую кнопку кнопку
-
-// function handlerOnPressedButton(canvas: HTMLCanvasElement, findRectangle: any) {
-//   let isMousePressed = false;
-//   const handle = (event: MouseEvent) => {
-//     if (isMousePressed) {
-//       console.log("нажата");
-//     }
-//   };
-
-//   canvas.addEventListener("mousedown", (event: any) => {
-//     if (event.button === 0) {
-//       isMousePressed = true;
-//     }
-//   });
-//   canvas.addEventListener("mouseup", function (event: any) {
-//     if (event.button === 0) {
-//       isMousePressed = false;
-
-//       canvas.removeEventListener("mousemove", handle);
-//     }
-//   });
-
-//   canvas.addEventListener("mousemove", handle);
-// }
