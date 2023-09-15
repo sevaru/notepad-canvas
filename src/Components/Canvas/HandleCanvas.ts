@@ -13,8 +13,8 @@ class Rectangle {
     this.id = Math.floor(Math.random() * 10);
     this.startX = x - 80;
     this.endX = x + 80;
-    this.startY = y;
-    this.endY = y + 180;
+    this.startY = y - 90;
+    this.endY = y + 90;
     this.width = 160;
     this.height = 180;
   }
@@ -26,10 +26,11 @@ class Rectangle {
     ctx.closePath();
   };
   updated = (x: number, y: number) => {
+    console.log(rectangleList);
     this.startX = x - 80;
     this.endX = x + 80;
-    this.startY = y;
-    this.endY = y + 180;
+    this.startY = y - 90;
+    this.endY = y + 90;
     this.width = 160;
     this.height = 180;
   };
@@ -57,8 +58,9 @@ export function handleCanvas(canvas: HTMLCanvasElement) {
     c!.draw(canvas);
     c!.startX = event.offsetX - 80;
     c!.endX = event.offsetX + 80;
-    c!.startY = event.offsetY;
-    c!.endY = event.offsetY + 180;
+
+    c!.startY = event.offsetY - 90;
+    c!.endY = event.offsetY + 90;
     rectangleList.forEach((item) => item.draw(canvas));
   }
 
@@ -75,7 +77,7 @@ export function handleCanvas(canvas: HTMLCanvasElement) {
   canvas.addEventListener("mouseup", (event) => {
     event.preventDefault();
     if (
-      rectangleList.length < 1 &&
+      rectangleList.length < 5 &&
       !findRectangle(rectangleList, event.offsetX, event.offsetY).flag &&
       !activeMove
     ) {
