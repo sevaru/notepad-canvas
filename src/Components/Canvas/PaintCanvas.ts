@@ -1,4 +1,5 @@
 import { Rectangle } from "./../../types/index";
+
 const rectangleList: Rectangle[] = [];
 let rectangle: Rectangle = {
   id: null,

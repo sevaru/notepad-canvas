@@ -1,6 +1,13 @@
 // import { Rectangle } from "./../../types/index";
 const rectangleList: Rectangle[] = [];
-let w: number;
+let colorList = [
+  "#86A69D",
+  "#F2B263",
+  "#F2C6C2",
+  "#F28585",
+  "#89D99D",
+  "#164773",
+];
 class Rectangle {
   id: number;
   startX: number;
@@ -9,7 +16,9 @@ class Rectangle {
   endY: number;
   width: number;
   height: number;
-  constructor(x: number, y: number, id: number) {
+  color: string;
+
+  constructor(x: number, y: number, id: number, color: string) {
     this.id = id;
     this.startX = x - 80;
     this.endX = x + 80;
@@ -17,12 +26,13 @@ class Rectangle {
     this.endY = y + 90;
     this.width = 160;
     this.height = 180;
+    this.color = color;
   }
   draw = (canvas: HTMLCanvasElement) => {
     let ctx = canvas.getContext("2d")!;
     ctx.beginPath();
+    ctx.fillStyle = this.color;
     ctx.fillRect(this.startX, this.startY, this.width, this.height);
-    ctx.stroke();
     ctx.closePath();
   };
   updated = (x: number, y: number) => {
@@ -32,6 +42,7 @@ class Rectangle {
     this.endY = y + 90;
     this.width = 160;
     this.height = 180;
+    this.color = this.color;
   };
 
   wipeOf = (canvas: HTMLCanvasElement) => {
@@ -51,13 +62,6 @@ export function handleCanvas(canvas: HTMLCanvasElement) {
     c?.wipeOf(canvas);
     c!.updated(event.offsetX, event.offsetY);
     c!.draw(canvas);
-
-    c!.startX = event.offsetX - 80;
-    c!.endX = event.offsetX + 80;
-
-    c!.startY = event.offsetY - 90;
-    c!.endY = event.offsetY + 90;
-
     rectangleList.forEach((item) => item.draw(canvas));
   }
 
@@ -66,7 +70,6 @@ export function handleCanvas(canvas: HTMLCanvasElement) {
     if (findRectangle(rectangleList, event.offsetX, event.offsetY).flag) {
       canvas.addEventListener("mousemove", handleMouseDown);
       activeMove = true;
-      w = event.offsetX;
     } else {
       console.log("Вы находитесь не на элементе");
     }
@@ -74,11 +77,18 @@ export function handleCanvas(canvas: HTMLCanvasElement) {
   canvas.addEventListener("mouseup", (event) => {
     event.preventDefault();
     if (
-      rectangleList.length < 5 &&
+      rectangleList.length < 6 &&
       !findRectangle(rectangleList, event.offsetX, event.offsetY).flag &&
       !activeMove
     ) {
-      let rectangle = new Rectangle(event.offsetX, event.offsetY, (id += 1));
+      let color = colorList[Math.floor(Math.random() * colorList.length)];
+      colorList = colorList.filter((item) => item !== color);
+      let rectangle = new Rectangle(
+        event.offsetX,
+        event.offsetY,
+        (id += 1),
+        color
+      );
       rectangle.draw(canvas);
       rectangleList.push(rectangle);
     }
