@@ -1,13 +1,14 @@
 // import { Rectangle } from "./../../types/index";
 const rectangleList: Rectangle[] = [];
 let colorList = [
-  "#86A69D",
-  "#F2B263",
-  "#F2C6C2",
-  "#F28585",
-  "#89D99D",
-  "#164773",
+  [134, 166, 157],
+  [242, 178, 99],
+  [242, 198, 194],
+  [242, 133, 133],
+  [137, 217, 157],
+  [22, 72, 115],
 ];
+// 0.8
 class Rectangle {
   id: number;
   startX: number;
@@ -16,9 +17,10 @@ class Rectangle {
   endY: number;
   width: number;
   height: number;
-  color: string;
+  color: number[];
+  borderRadius: number;
 
-  constructor(x: number, y: number, id: number, color: string) {
+  constructor(x: number, y: number, id: number, color: number[]) {
     this.id = id;
     this.startX = x - 80;
     this.endX = x + 80;
@@ -27,12 +29,43 @@ class Rectangle {
     this.width = 160;
     this.height = 180;
     this.color = color;
+    this.borderRadius = 30;
   }
-  draw = (canvas: HTMLCanvasElement) => {
+  draw = (canvas: HTMLCanvasElement, opacity: number) => {
     let ctx = canvas.getContext("2d")!;
     ctx.beginPath();
-    ctx.fillStyle = this.color;
-    ctx.fillRect(this.startX, this.startY, this.width, this.height);
+    ctx.fillStyle = `rgb(${this.color},${opacity})`;
+    ctx.moveTo(this.startX + this.borderRadius, this.startY);
+    ctx.arcTo(
+      this.startX + this.width,
+      this.startY,
+      this.startX + this.width,
+      this.startY + this.height,
+      this.borderRadius
+    );
+    ctx.arcTo(
+      this.startX + this.width,
+      this.startY + this.height,
+      this.startX,
+      this.startY + this.height,
+      this.borderRadius
+    );
+    ctx.arcTo(
+      this.startX,
+      this.startY + this.height,
+      this.startX,
+      this.startY,
+      this.borderRadius
+    );
+    ctx.arcTo(
+      this.startX,
+      this.startY,
+      this.startX + this.width,
+      this.startY,
+      this.borderRadius
+    );
+    ctx.fill();
+    // ctx.fillRect(this.startX, this.startY, this.width, this.height);
     ctx.closePath();
   };
   updated = (x: number, y: number) => {
@@ -61,8 +94,10 @@ export function handleCanvas(canvas: HTMLCanvasElement) {
     let c = rectangleList.find((item) => item.id === idElement);
     c?.wipeOf(canvas);
     c!.updated(event.offsetX, event.offsetY);
-    c!.draw(canvas);
-    rectangleList.forEach((item) => item.draw(canvas));
+    c!.draw(canvas, 0.5);
+    rectangleList.forEach((item) =>
+      item.id === idElement ? item.draw(canvas, 0.5) : item.draw(canvas, 1)
+    );
   }
 
   canvas.addEventListener("mousedown", (event) => {
@@ -75,6 +110,13 @@ export function handleCanvas(canvas: HTMLCanvasElement) {
     }
   });
   canvas.addEventListener("mouseup", (event) => {
+    rectangleList
+      .find(
+        (item) =>
+          item.id ===
+          findRectangle(rectangleList, event.offsetX, event.offsetY).id
+      )
+      ?.draw(canvas, 1);
     event.preventDefault();
     if (
       rectangleList.length < 6 &&
@@ -89,7 +131,7 @@ export function handleCanvas(canvas: HTMLCanvasElement) {
         (id += 1),
         color
       );
-      rectangle.draw(canvas);
+      rectangle.draw(canvas, 1);
       rectangleList.push(rectangle);
     }
     canvas.removeEventListener("mousemove", handleMouseDown);

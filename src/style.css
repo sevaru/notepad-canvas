@@ -121,6 +121,7 @@ h1 {
   font-size: 2rem;
   font-family: Helvetica;
   color: white;
+  /* background-color: rgba(22, 72, 115,); */
 }
 
 canvas {
