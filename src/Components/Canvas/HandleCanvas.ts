@@ -19,6 +19,7 @@ class Rectangle {
   height: number;
   color: number[];
   borderRadius: number;
+  constentText: string;
 
   constructor(x: number, y: number, id: number, color: number[]) {
     this.id = id;
@@ -30,6 +31,7 @@ class Rectangle {
     this.height = 180;
     this.color = color;
     this.borderRadius = 30;
+    this.constentText = "";
   }
   draw = (canvas: HTMLCanvasElement, opacity: number) => {
     let ctx = canvas.getContext("2d")!;
@@ -82,6 +84,18 @@ class Rectangle {
     let ctx = canvas.getContext("2d")!;
     ctx.clearRect(this.startX, this.startY, 160, 180);
   };
+  insertText = (
+    canvas: HTMLCanvasElement,
+    text: string,
+    textInput: HTMLDivElement
+  ) => {
+    textInput.style.left = `${this.startX + 20}px`;
+    textInput.style.top = `${this.startY + 90}px`;
+    let ctx = canvas.getContext("2d")!;
+    ctx.font = "10px Helvetica";
+    ctx.fillStyle = "white";
+    ctx.fillText(text, this.startX + 40, this.startY + 90);
+  };
 }
 export function handleCanvas(canvas: HTMLCanvasElement) {
   function resizeWindowBrowser() {
@@ -99,7 +113,6 @@ export function handleCanvas(canvas: HTMLCanvasElement) {
     let c = rectangleList.find((item) => item.id === idElement);
     c?.wipeOf(canvas);
     c!.updated(event.offsetX, event.offsetY);
-    c!.draw(canvas, 0.5);
     rectangleList.forEach((item) =>
       item.id === idElement ? item.draw(canvas, 0.5) : item.draw(canvas, 1)
     );
@@ -115,14 +128,15 @@ export function handleCanvas(canvas: HTMLCanvasElement) {
     }
   });
   canvas.addEventListener("mouseup", (event) => {
-    rectangleList
-      .find(
-        (item) =>
-          item.id ===
-          findRectangle(rectangleList, event.offsetX, event.offsetY).id
-      )
-      ?.draw(canvas, 1);
     event.preventDefault();
+    // rectangleList
+    //   .find(
+    //     (item) =>
+    //       item.id ===
+    //       findRectangle(rectangleList, event.offsetX, event.offsetY).id
+    //   )
+    //   ?.draw(canvas, 1);
+    rectangleList.forEach((item) => item.draw(canvas, 1));
     if (
       rectangleList.length < 6 &&
       !findRectangle(rectangleList, event.offsetX, event.offsetY).flag &&
@@ -141,6 +155,26 @@ export function handleCanvas(canvas: HTMLCanvasElement) {
     }
     canvas.removeEventListener("mousemove", handleMouseDown);
     activeMove = false;
+  });
+  canvas.addEventListener("dblclick", (event) => {
+    const canvasContainer = document.querySelector(".canvas-сontainer");
+    const textInput = document.createElement("input");
+    textInput.id = "text-input";
+    textInput.style.width = "100px";
+    textInput.style.height = "20px";
+    textInput.style.position = "absolute";
+    textInput.style.backgroundColor = "green";
+    textInput.style.color = "white";
+    textInput.focus();
+    canvasContainer!.appendChild(textInput);
+    let element = rectangleList.find(
+      (item) =>
+        item.id ===
+        findRectangle(rectangleList, event.offsetX, event.offsetY).id
+    );
+    if (element) {
+      element.insertText(canvas, "Какой текст вставить", textInput);
+    }
   });
 
   return;
