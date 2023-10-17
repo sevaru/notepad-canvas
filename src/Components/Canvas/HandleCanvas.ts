@@ -84,8 +84,13 @@ class Rectangle {
   };
 }
 export function handleCanvas(canvas: HTMLCanvasElement) {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
+  function resizeWindowBrowser() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    rectangleList.forEach((item) => item.draw(canvas, 1));
+  }
+  resizeWindowBrowser();
+  window.addEventListener("resize", resizeWindowBrowser);
 
   let activeMove = false;
   let idElement: number;
