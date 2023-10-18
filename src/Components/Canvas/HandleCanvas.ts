@@ -86,15 +86,21 @@ class Rectangle {
   };
   insertText = (
     canvas: HTMLCanvasElement,
-    text: string,
-    textInput: HTMLDivElement
+    textInput: HTMLTextAreaElement,
+    text?: string
   ) => {
-    textInput.style.left = `${this.startX + 20}px`;
+    if (text) {
+      this.constentText = text;
+    }
+    textInput.style.left = `${this.startX + 10}px`;
     textInput.style.top = `${this.startY + 90}px`;
-    let ctx = canvas.getContext("2d")!;
-    ctx.font = "10px Helvetica";
-    ctx.fillStyle = "white";
-    ctx.fillText(text, this.startX + 40, this.startY + 90);
+    textInput.style.backgroundColor = `${this.color}`;
+    textInput.focus();
+    // let ctx = canvas.getContext("2d")!;
+    // ctx.font = "18px Helvetica";
+    // ctx.fillStyle = "white";
+
+    // ctx.fillText("hello<br>hi", this.startX + 10, this.startY + 45);
   };
 }
 export function handleCanvas(canvas: HTMLCanvasElement) {
@@ -158,22 +164,50 @@ export function handleCanvas(canvas: HTMLCanvasElement) {
   });
   canvas.addEventListener("dblclick", (event) => {
     const canvasContainer = document.querySelector(".canvas-сontainer");
-    const textInput = document.createElement("input");
+    const textInput = document.createElement("textarea");
     textInput.id = "text-input";
-    textInput.style.width = "100px";
-    textInput.style.height = "20px";
     textInput.style.position = "absolute";
-    textInput.style.backgroundColor = "green";
+    textInput.style.maxWidth = `${130}px`;
+    textInput.style.minWidth = `${130}px`;
+    textInput.style.maxHeight = "130px";
+    textInput.style.height = "130px";
+    textInput.style.outline = "none";
+    textInput.style.resize = "none";
     textInput.style.color = "white";
-    textInput.focus();
-    canvasContainer!.appendChild(textInput);
+    textInput.style.textAlign = "center";
+    textInput.style.fontFamily = "Helvetica";
+    textInput.style.overflow = "hidden";
+    textInput.cols = 13;
+    textInput.addEventListener("input", () => {
+      let charCount = textInput.value.length;
+      textInput.style.fontSize =
+        Math.max(18, 18 + charCount <= 18 ? charCount : 18) + "px";
+      while (textInput.scrollHeight > textInput.clientHeight) {
+        let currentFontSize = parseFloat(
+          window.getComputedStyle(textInput, null).getPropertyValue("font-size")
+        );
+        textInput.style.fontSize = currentFontSize - 1 + "px";
+      }
+    });
+
     let element = rectangleList.find(
       (item) =>
         item.id ===
         findRectangle(rectangleList, event.offsetX, event.offsetY).id
     );
-    if (element) {
-      element.insertText(canvas, "Какой текст вставить", textInput);
+    if (element && rectangleList.length <= 6) {
+      canvas.addEventListener("click", () => {
+        element!.insertText(canvas, textInput, textInput.value);
+        textInput.remove();
+      });
+      textInput.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") {
+          element!.insertText(canvas, textInput, textInput.value);
+          textInput.remove();
+        }
+      });
+      canvasContainer!.appendChild(textInput);
+      element.insertText(canvas, textInput);
     }
   });
 
