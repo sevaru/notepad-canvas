@@ -58,7 +58,6 @@ export class Rectangle {
       this.borderRadius
     );
     ctx.fill();
-    // ctx.fillRect(this.startX, this.startY, this.width, this.height);
     ctx.closePath();
   };
   updated = (x: number, y: number) => {
