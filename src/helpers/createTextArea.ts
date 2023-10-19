@@ -13,6 +13,6 @@ export function createTextArea() {
   textInput.style.fontFamily = "Helvetica";
   textInput.style.overflow = "hidden";
   textInput.cols = 13;
-  textInput.style.lineHeight = "15px";
+  textInput.style.lineHeight = "18px";
   return textInput;
 }

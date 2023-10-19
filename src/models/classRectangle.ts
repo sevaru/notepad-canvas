@@ -87,11 +87,12 @@ export class Rectangle {
     ctx.font = `${textInput.style.fontSize} Helvetica`;
     ctx.fillStyle = "white";
     const textWidth = ctx.measureText(textInput.value!).width;
-    if (handlerLengthLine(textWidth, textInput!.value)!.length > 0) {
+    // handlerLengthLine(ctx, textWidth, textInput!.value);
+    if (handlerLengthLine(ctx, textWidth, textInput!.value)!.length > 0) {
       let heightLine = this.startY + 45;
-      for (let item of handlerLengthLine(textWidth, textInput.value)!) {
-        ctx.fillText(item, this.startX + 10, heightLine);
-        heightLine += 15;
+      for (let item of handlerLengthLine(ctx, textWidth, textInput.value)!) {
+        ctx.fillText(item, this.startX + 15, heightLine);
+        heightLine += 18;
       }
     }
   };
