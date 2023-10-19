@@ -1,3 +1,5 @@
+import { handlerLengthLine } from "../helpers/handlerLengthLine";
+
 export class Rectangle {
   id: number;
   startX: number;
@@ -73,22 +75,24 @@ export class Rectangle {
     let ctx = canvas.getContext("2d")!;
     ctx.clearRect(this.startX, this.startY, 160, 180);
   };
-  insertText = (
-    canvas: HTMLCanvasElement,
-    textInput: HTMLTextAreaElement,
-    text?: string
-  ) => {
-    if (text) {
-      this.constentText = text;
+  insertText = (canvas: HTMLCanvasElement, textInput: HTMLTextAreaElement) => {
+    if (textInput.value) {
+      this.constentText = textInput.value;
     }
     textInput.style.left = `${this.startX + 10}px`;
     textInput.style.top = `${this.startY + 90}px`;
     textInput.style.backgroundColor = `${this.color}`;
     textInput.focus();
-    // let ctx = canvas.getContext("2d")!;
-    // ctx.font = "18px Helvetica";
-    // ctx.fillStyle = "white";
-
-    // ctx.fillText("hello<br>hi", this.startX + 10, this.startY + 45);
+    let ctx = canvas.getContext("2d")!;
+    ctx.font = `${textInput.style.fontSize} Helvetica`;
+    ctx.fillStyle = "white";
+    const textWidth = ctx.measureText(textInput.value!).width;
+    if (handlerLengthLine(textWidth, textInput!.value)!.length > 0) {
+      let heightLine = this.startY + 45;
+      for (let item of handlerLengthLine(textWidth, textInput.value)!) {
+        ctx.fillText(item, this.startX + 10, heightLine);
+        heightLine += 15;
+      }
+    }
   };
 }

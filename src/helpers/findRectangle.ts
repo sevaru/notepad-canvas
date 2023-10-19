@@ -1,5 +1,5 @@
 import { Rectangle } from "../models/classRectangle";
-export function findRectangle(
+export function findRectangleByCoordinates(
   rectangleList: Rectangle[],
   x: number,
   y: number

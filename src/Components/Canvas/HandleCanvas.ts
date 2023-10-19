@@ -1,5 +1,8 @@
 import { Rectangle } from "../../models/classRectangle";
-import { findRectangle } from "../../helpers/findRectangle";
+import { findRectangleByCoordinates } from "../../helpers/findRectangle";
+import { resizeWindowBrowser } from "../../helpers/resizeWindowBrowser";
+import { createTextArea } from "../../helpers/createTextArea";
+import { handlerLengthLine } from "../../helpers/handlerLengthLine";
 const rectangleList: Rectangle[] = [];
 let colorList = [
   [134, 166, 157],
@@ -9,32 +12,34 @@ let colorList = [
   [137, 217, 157],
   [22, 72, 115],
 ];
-// 0.8
-
 export function handleCanvas(canvas: HTMLCanvasElement) {
-  function resizeWindowBrowser() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    rectangleList.forEach((item) => item.draw(canvas, 1));
-  }
-  resizeWindowBrowser();
-  window.addEventListener("resize", resizeWindowBrowser);
+  resizeWindowBrowser(canvas, rectangleList);
+  window.addEventListener("resize", () =>
+    resizeWindowBrowser(canvas, rectangleList)
+  );
 
   let activeMove = false;
   let idElement: number;
   let id = 0;
   function handleMouseDown(event: MouseEvent) {
-    let c = rectangleList.find((item) => item.id === idElement);
-    c?.wipeOf(canvas);
-    c!.updated(event.offsetX, event.offsetY);
+    let rectangle = rectangleList.find((item) => item.id === idElement);
+    rectangle!.wipeOf(canvas);
+    rectangle!.updated(event.offsetX, event.offsetY);
     rectangleList.forEach((item) =>
       item.id === idElement ? item.draw(canvas, 0.5) : item.draw(canvas, 1)
     );
   }
 
   canvas.addEventListener("mousedown", (event) => {
-    idElement = findRectangle(rectangleList, event.offsetX, event.offsetY).id;
-    if (findRectangle(rectangleList, event.offsetX, event.offsetY).flag) {
+    idElement = findRectangleByCoordinates(
+      rectangleList,
+      event.offsetX,
+      event.offsetY
+    ).id;
+    if (
+      findRectangleByCoordinates(rectangleList, event.offsetX, event.offsetY)
+        .flag
+    ) {
       canvas.addEventListener("mousemove", handleMouseDown);
       activeMove = true;
     } else {
@@ -53,7 +58,8 @@ export function handleCanvas(canvas: HTMLCanvasElement) {
     rectangleList.forEach((item) => item.draw(canvas, 1));
     if (
       rectangleList.length < 6 &&
-      !findRectangle(rectangleList, event.offsetX, event.offsetY).flag &&
+      !findRectangleByCoordinates(rectangleList, event.offsetX, event.offsetY)
+        .flag &&
       !activeMove
     ) {
       let color = colorList[Math.floor(Math.random() * colorList.length)];
@@ -72,20 +78,7 @@ export function handleCanvas(canvas: HTMLCanvasElement) {
   });
   canvas.addEventListener("dblclick", (event) => {
     const canvasContainer = document.querySelector(".canvas-сontainer");
-    const textInput = document.createElement("textarea");
-    textInput.id = "text-input";
-    textInput.style.position = "absolute";
-    textInput.style.maxWidth = `${130}px`;
-    textInput.style.minWidth = `${130}px`;
-    textInput.style.maxHeight = "130px";
-    textInput.style.height = "130px";
-    textInput.style.outline = "none";
-    textInput.style.resize = "none";
-    textInput.style.color = "white";
-    textInput.style.textAlign = "center";
-    textInput.style.fontFamily = "Helvetica";
-    textInput.style.overflow = "hidden";
-    textInput.cols = 13;
+    const textInput = createTextArea();
     textInput.addEventListener("input", () => {
       let charCount = textInput.value.length;
       textInput.style.fontSize =
@@ -101,16 +94,17 @@ export function handleCanvas(canvas: HTMLCanvasElement) {
     let element = rectangleList.find(
       (item) =>
         item.id ===
-        findRectangle(rectangleList, event.offsetX, event.offsetY).id
+        findRectangleByCoordinates(rectangleList, event.offsetX, event.offsetY)
+          .id
     );
     if (element && rectangleList.length <= 6) {
-      canvas.addEventListener("click", () => {
-        element!.insertText(canvas, textInput, textInput.value);
+      document.addEventListener("click", () => {
+        element!.insertText(canvas, textInput);
         textInput.remove();
       });
       textInput.addEventListener("keydown", (event) => {
         if (event.key === "Enter") {
-          element!.insertText(canvas, textInput, textInput.value);
+          element!.insertText(canvas, textInput);
           textInput.remove();
         }
       });
