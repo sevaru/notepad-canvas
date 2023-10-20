@@ -37,9 +37,10 @@ export function handleCanvas(canvas: HTMLCanvasElement) {
       event.offsetX,
       event.offsetY
     ).id;
+    // rectangleList = sortRectangleList(rectangleList, idElement);
     // rectangleList.forEach((item) => item.draw(canvas, 1));
 
-    // rectangleList.find((item) => item.id === idElement)?.draw(canvas, 1);
+    rectangleList.find((item) => item.id === idElement)?.draw(canvas, 1);
     if (
       findRectangleByCoordinates(rectangleList, event.offsetX, event.offsetY)
         .flag
@@ -55,9 +56,14 @@ export function handleCanvas(canvas: HTMLCanvasElement) {
     // rectangleList.find((item) => item.id === idElement)?.draw(canvas, 1);
     // rectangleList.find((item) => item.id === idElement)?.draw(canvas, 1);
     // rectangleList = sortRectangleList(rectangleList, idElement);
-    // rectangleList.forEach((item) => item.draw(canvas, 1));
-    rectangleList.find((item) => item.id === idElement)?.draw(canvas, 1);
+    idElement = findRectangleByCoordinates(
+      rectangleList,
+      event.offsetX,
+      event.offsetY
+    ).id;
     rectangleList = sortRectangleList(rectangleList, idElement);
+    rectangleList.forEach((item) => item.draw(canvas, 1));
+    // rectangleList.find((item) => item.id === idElement)?.draw(canvas, 1);
     if (
       rectangleList.length < 6 &&
       !findRectangleByCoordinates(rectangleList, event.offsetX, event.offsetY)
@@ -90,9 +96,11 @@ export function handleCanvas(canvas: HTMLCanvasElement) {
     );
     const textInput = createTextArea(element!.getInfoRectangle());
     element!.removeText(canvas, textInput.value);
+    idElement = element!.id;
+    rectangleList = sortRectangleList(rectangleList, element!.id);
     rectangleList.forEach((item) => item.draw(canvas, 1));
     element?.draw(canvas, 1);
-    sortRectangleList(rectangleList, element!.id);
+
     if (element && rectangleList.length <= 6) {
       textInput.addEventListener("input", () => {
         let charCount = textInput.value.length;
