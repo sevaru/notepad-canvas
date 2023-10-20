@@ -10,10 +10,10 @@ export function findRectangleByCoordinates(
   };
   rectangleList.forEach((item) => {
     if (
-      item.startX! < x &&
-      item.endX! > x &&
-      item.startY! < y &&
-      item.endY! > y
+      item._startX! < x &&
+      item._endX! > x &&
+      item._startY! < y &&
+      item._endY! > y
     ) {
       rectangle.flag = true;
       rectangle.id = item.id!;

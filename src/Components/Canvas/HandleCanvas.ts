@@ -1,9 +1,9 @@
 import { Rectangle } from "../../models/classRectangle";
-import { findRectangleByCoordinates } from "../../helpers/findRectangle";
+import { findRectangleByCoordinates } from "../../helpers/findRectangleByCordinates";
 import { resizeWindowBrowser } from "../../helpers/resizeWindowBrowser";
 import { createTextArea } from "../../helpers/createTextArea";
-import { handlerLengthLine } from "../../helpers/handlerLengthLine";
-const rectangleList: Rectangle[] = [];
+import { sortRectangleList } from "../../helpers/sortRectangleList";
+let rectangleList: Rectangle[] = [];
 let colorList = [
   [134, 166, 157],
   [242, 178, 99],
@@ -25,9 +25,11 @@ export function handleCanvas(canvas: HTMLCanvasElement) {
     let rectangle = rectangleList.find((item) => item.id === idElement);
     rectangle!.wipeOf(canvas);
     rectangle!.updated(event.offsetX, event.offsetY);
+    rectangleList = sortRectangleList(rectangleList, idElement);
     rectangleList.forEach((item) =>
       item.id === idElement ? item.draw(canvas, 0.5) : item.draw(canvas, 1)
     );
+    rectangle?.draw(canvas, 0.5);
   }
 
   canvas.addEventListener("mousedown", (event) => {
@@ -36,6 +38,8 @@ export function handleCanvas(canvas: HTMLCanvasElement) {
       event.offsetX,
       event.offsetY
     ).id;
+
+    rectangleList.find((item) => item.id === idElement)?.draw(canvas, 1);
     if (
       findRectangleByCoordinates(rectangleList, event.offsetX, event.offsetY)
         .flag
@@ -48,14 +52,8 @@ export function handleCanvas(canvas: HTMLCanvasElement) {
   });
   canvas.addEventListener("mouseup", (event) => {
     event.preventDefault();
-    // rectangleList
-    //   .find(
-    //     (item) =>
-    //       item.id ===
-    //       findRectangle(rectangleList, event.offsetX, event.offsetY).id
-    //   )
-    //   ?.draw(canvas, 1);
-    rectangleList.forEach((item) => item.draw(canvas, 1));
+
+    rectangleList.find((item) => item.id === idElement)?.draw(canvas, 1);
     if (
       rectangleList.length < 6 &&
       !findRectangleByCoordinates(rectangleList, event.offsetX, event.offsetY)
@@ -70,46 +68,54 @@ export function handleCanvas(canvas: HTMLCanvasElement) {
         (id += 1),
         color
       );
-      rectangle.draw(canvas, 1);
       rectangleList.push(rectangle);
+      rectangle.draw(canvas, 1);
     }
+    rectangleList.find((item) => item.id === idElement)?.draw(canvas, 1);
     canvas.removeEventListener("mousemove", handleMouseDown);
     activeMove = false;
   });
+  // DBCLICK///////////////////////////////////////////////////////
   canvas.addEventListener("dblclick", (event) => {
     const canvasContainer = document.querySelector(".canvas-сontainer");
-    const textInput = createTextArea();
-    textInput.addEventListener("input", () => {
-      let charCount = textInput.value.length;
-      textInput.style.fontSize =
-        Math.max(18, 18 + charCount <= 18 ? charCount : 18) + "px";
-      while (textInput.scrollHeight > textInput.clientHeight) {
-        let currentFontSize = parseFloat(
-          window.getComputedStyle(textInput, null).getPropertyValue("font-size")
-        );
-        textInput.style.fontSize = currentFontSize - 1 + "px";
-      }
-    });
-
     let element = rectangleList.find(
       (item) =>
         item.id ===
         findRectangleByCoordinates(rectangleList, event.offsetX, event.offsetY)
           .id
     );
+    const textInput = createTextArea(element!.getInfoRectangle());
+    element!.removeText(canvas, textInput.value);
+    rectangleList.forEach((item) => item.draw(canvas, 1));
+    element?.draw(canvas, 1);
     if (element && rectangleList.length <= 6) {
+      textInput.addEventListener("input", () => {
+        let charCount = textInput.value.length;
+        textInput.style.fontSize =
+          Math.max(18, 18 + charCount <= 18 ? charCount : 18) + "px";
+        while (textInput.scrollHeight > textInput.clientHeight) {
+          let currentFontSize = parseFloat(
+            window
+              .getComputedStyle(textInput, null)
+              .getPropertyValue("font-size")
+          );
+          textInput.style.fontSize = currentFontSize - 1 + "px";
+        }
+      });
       document.addEventListener("click", () => {
-        element!.insertText(canvas, textInput);
+        element!.insertText(textInput);
+        element?.draw(canvas, 1);
         textInput.remove();
       });
       textInput.addEventListener("keydown", (event) => {
         if (event.key === "Enter") {
-          element!.insertText(canvas, textInput);
+          element!.insertText(textInput);
+          element?.draw(canvas, 1);
           textInput.remove();
         }
       });
       canvasContainer!.appendChild(textInput);
-      element.insertText(canvas, textInput);
+      element.insertText(textInput);
     }
   });
 

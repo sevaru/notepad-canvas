@@ -2,97 +2,130 @@ import { handlerLengthLine } from "../helpers/handlerLengthLine";
 
 export class Rectangle {
   id: number;
-  startX: number;
-  endX: number;
-  startY: number;
-  endY: number;
-  width: number;
-  height: number;
+  _startX: number;
+  _endX: number;
+  _startY: number;
+  _endY: number;
+  _width: number;
+  _height: number;
   color: number[];
   borderRadius: number;
-  constentText: string;
-
+  contextText: string;
+  contextTextFontSize: string;
   constructor(x: number, y: number, id: number, color: number[]) {
     this.id = id;
-    this.startX = x - 80;
-    this.endX = x + 80;
-    this.startY = y - 90;
-    this.endY = y + 90;
-    this.width = 160;
-    this.height = 180;
+    this._startX = x - 80;
+    this._endX = x + 80;
+    this._startY = y - 90;
+    this._endY = y + 90;
+    this._width = 160;
+    this._height = 180;
     this.color = color;
     this.borderRadius = 30;
-    this.constentText = "";
+    this.contextText = "";
+    this.contextTextFontSize = "";
   }
+  getInfoRectangle = () => {
+    const info = {
+      startX: this._startX,
+      endX: this._endX,
+      startY: this._startY,
+      endY: this._endY,
+      width: this._width,
+      height: this._height,
+      color: this.color,
+      contextText: this.contextText,
+    };
+    return info;
+  };
   draw = (canvas: HTMLCanvasElement, opacity: number) => {
     let ctx = canvas.getContext("2d")!;
+
     ctx.beginPath();
     ctx.fillStyle = `rgb(${this.color},${opacity})`;
-    ctx.moveTo(this.startX + this.borderRadius, this.startY);
+    ctx.moveTo(this._startX + this.borderRadius, this._startY);
     ctx.arcTo(
-      this.startX + this.width,
-      this.startY,
-      this.startX + this.width,
-      this.startY + this.height,
+      this._startX + this._width,
+      this._startY,
+      this._startX + this._width,
+      this._startY + this._height,
       this.borderRadius
     );
     ctx.arcTo(
-      this.startX + this.width,
-      this.startY + this.height,
-      this.startX,
-      this.startY + this.height,
+      this._startX + this._width,
+      this._startY + this._height,
+      this._startX,
+      this._startY + this._height,
       this.borderRadius
     );
     ctx.arcTo(
-      this.startX,
-      this.startY + this.height,
-      this.startX,
-      this.startY,
+      this._startX,
+      this._startY + this._height,
+      this._startX,
+      this._startY,
       this.borderRadius
     );
     ctx.arcTo(
-      this.startX,
-      this.startY,
-      this.startX + this.width,
-      this.startY,
+      this._startX,
+      this._startY,
+      this._startX + this._width,
+      this._startY,
       this.borderRadius
     );
     ctx.fill();
+    if (this.contextText) {
+      ctx.font = `${this.contextTextFontSize} Helvetica`;
+      ctx.fillStyle = "white";
+      if (handlerLengthLine(ctx, this.contextText)!.length > 0) {
+        let heightLine = this._startY + 45;
+        console.log(handlerLengthLine(ctx, this.contextText));
+        for (let item of handlerLengthLine(ctx, this.contextText)!) {
+          ctx.fillText(item, this._startX + 15, heightLine);
+          heightLine += 18;
+        }
+      }
+    }
     ctx.closePath();
   };
+  drawText = (canvas: HTMLCanvasElement) => {
+    let ctx = canvas.getContext("2d")!;
+    if (this.contextText) {
+      ctx.font = `${this.contextTextFontSize} Helvetica`;
+      ctx.fillStyle = "white";
+      if (handlerLengthLine(ctx, this.contextText)!.length > 0) {
+        let heightLine = this._startY + 45;
+        console.log(handlerLengthLine(ctx, this.contextText));
+        for (let item of handlerLengthLine(ctx, this.contextText)!) {
+          ctx.fillText(item, this._startX + 15, heightLine);
+          heightLine += 18;
+        }
+      }
+    }
+  };
   updated = (x: number, y: number) => {
-    this.startX = x - 80;
-    this.endX = x + 80;
-    this.startY = y - 90;
-    this.endY = y + 90;
-    this.width = 160;
-    this.height = 180;
+    this._startX = x - 80;
+    this._endX = x + 80;
+    this._startY = y - 90;
+    this._endY = y + 90;
+    this._width = 160;
+    this._height = 180;
     this.color = this.color;
   };
 
   wipeOf = (canvas: HTMLCanvasElement) => {
     let ctx = canvas.getContext("2d")!;
-    ctx.clearRect(this.startX, this.startY, 160, 180);
+    ctx.clearRect(this._startX, this._startY, 160, 180);
   };
-  insertText = (canvas: HTMLCanvasElement, textInput: HTMLTextAreaElement) => {
-    if (textInput.value) {
-      this.constentText = textInput.value;
-    }
-    textInput.style.left = `${this.startX + 10}px`;
-    textInput.style.top = `${this.startY + 90}px`;
-    textInput.style.backgroundColor = `${this.color}`;
+
+  insertText = (textInput: HTMLTextAreaElement) => {
+    this.contextText = textInput.value;
+    this.contextTextFontSize = textInput.style.fontSize;
     textInput.focus();
-    let ctx = canvas.getContext("2d")!;
-    ctx.font = `${textInput.style.fontSize} Helvetica`;
-    ctx.fillStyle = "white";
-    const textWidth = ctx.measureText(textInput.value!).width;
-    // handlerLengthLine(ctx, textWidth, textInput!.value);
-    if (handlerLengthLine(ctx, textWidth, textInput!.value)!.length > 0) {
-      let heightLine = this.startY + 45;
-      for (let item of handlerLengthLine(ctx, textWidth, textInput.value)!) {
-        ctx.fillText(item, this.startX + 15, heightLine);
-        heightLine += 18;
-      }
-    }
+  };
+  removeText = (canvas: HTMLCanvasElement, textInput: string) => {
+    textInput = this.contextText;
+    this.contextText = "";
+    this.wipeOf(canvas);
+    this.draw(canvas, 1);
   };
 }
