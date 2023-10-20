@@ -25,10 +25,9 @@ export function handleCanvas(canvas: HTMLCanvasElement) {
     let rectangle = rectangleList.find((item) => item.id === idElement);
     rectangle!.wipeOf(canvas);
     rectangle!.updated(event.offsetX, event.offsetY);
-    rectangleList = sortRectangleList(rectangleList, idElement);
-    rectangleList.forEach((item) =>
-      item.id === idElement ? item.draw(canvas, 0.5) : item.draw(canvas, 1)
-    );
+    rectangleList
+      .filter((item) => item.id !== idElement)
+      .forEach((item) => item.draw(canvas, 1));
     rectangle?.draw(canvas, 0.5);
   }
 
@@ -38,8 +37,9 @@ export function handleCanvas(canvas: HTMLCanvasElement) {
       event.offsetX,
       event.offsetY
     ).id;
+    // rectangleList.forEach((item) => item.draw(canvas, 1));
 
-    rectangleList.find((item) => item.id === idElement)?.draw(canvas, 1);
+    // rectangleList.find((item) => item.id === idElement)?.draw(canvas, 1);
     if (
       findRectangleByCoordinates(rectangleList, event.offsetX, event.offsetY)
         .flag
@@ -52,8 +52,12 @@ export function handleCanvas(canvas: HTMLCanvasElement) {
   });
   canvas.addEventListener("mouseup", (event) => {
     event.preventDefault();
-
+    // rectangleList.find((item) => item.id === idElement)?.draw(canvas, 1);
+    // rectangleList.find((item) => item.id === idElement)?.draw(canvas, 1);
+    // rectangleList = sortRectangleList(rectangleList, idElement);
+    // rectangleList.forEach((item) => item.draw(canvas, 1));
     rectangleList.find((item) => item.id === idElement)?.draw(canvas, 1);
+    rectangleList = sortRectangleList(rectangleList, idElement);
     if (
       rectangleList.length < 6 &&
       !findRectangleByCoordinates(rectangleList, event.offsetX, event.offsetY)
@@ -71,7 +75,7 @@ export function handleCanvas(canvas: HTMLCanvasElement) {
       rectangleList.push(rectangle);
       rectangle.draw(canvas, 1);
     }
-    rectangleList.find((item) => item.id === idElement)?.draw(canvas, 1);
+
     canvas.removeEventListener("mousemove", handleMouseDown);
     activeMove = false;
   });
@@ -88,6 +92,7 @@ export function handleCanvas(canvas: HTMLCanvasElement) {
     element!.removeText(canvas, textInput.value);
     rectangleList.forEach((item) => item.draw(canvas, 1));
     element?.draw(canvas, 1);
+    sortRectangleList(rectangleList, element!.id);
     if (element && rectangleList.length <= 6) {
       textInput.addEventListener("input", () => {
         let charCount = textInput.value.length;
