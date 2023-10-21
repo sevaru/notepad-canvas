@@ -26,7 +26,7 @@ export function handleCanvas(canvas: HTMLCanvasElement) {
     rectangle!.wipeOf(canvas);
     rectangle!.updated(event.offsetX, event.offsetY);
     rectangleList
-      .filter((item) => item.id !== idElement)
+      .filter((item) => item.id !== rectangle!.id)
       .forEach((item) => item.draw(canvas, 1));
     rectangle?.draw(canvas, 0.5);
   }
@@ -38,15 +38,14 @@ export function handleCanvas(canvas: HTMLCanvasElement) {
       event.offsetY
     ).id;
     // rectangleList = sortRectangleList(rectangleList, idElement);
-    // rectangleList.forEach((item) => item.draw(canvas, 1));
-
-    rectangleList.find((item) => item.id === idElement)?.draw(canvas, 1);
     if (
       findRectangleByCoordinates(rectangleList, event.offsetX, event.offsetY)
         .flag
     ) {
       canvas.addEventListener("mousemove", handleMouseDown);
       activeMove = true;
+      rectangleList.forEach((item) => item.draw(canvas, 1));
+      // rectangleList.find((item) => item.id === idElement)?.draw(canvas, 1);
     } else {
       console.log("Вы находитесь не на элементе");
     }
@@ -56,14 +55,9 @@ export function handleCanvas(canvas: HTMLCanvasElement) {
     // rectangleList.find((item) => item.id === idElement)?.draw(canvas, 1);
     // rectangleList.find((item) => item.id === idElement)?.draw(canvas, 1);
     // rectangleList = sortRectangleList(rectangleList, idElement);
-    idElement = findRectangleByCoordinates(
-      rectangleList,
-      event.offsetX,
-      event.offsetY
-    ).id;
     rectangleList = sortRectangleList(rectangleList, idElement);
     rectangleList.forEach((item) => item.draw(canvas, 1));
-    // rectangleList.find((item) => item.id === idElement)?.draw(canvas, 1);
+    rectangleList.find((item) => item.id === idElement)?.draw(canvas, 1);
     if (
       rectangleList.length < 6 &&
       !findRectangleByCoordinates(rectangleList, event.offsetX, event.offsetY)
@@ -94,10 +88,11 @@ export function handleCanvas(canvas: HTMLCanvasElement) {
         findRectangleByCoordinates(rectangleList, event.offsetX, event.offsetY)
           .id
     );
+    element!.activeInput = true;
     const textInput = createTextArea(element!.getInfoRectangle());
     element!.removeText(canvas, textInput.value);
-    idElement = element!.id;
-    rectangleList = sortRectangleList(rectangleList, element!.id);
+    // idElement = element!.id;
+    // rectangleList = sortRectangleList(rectangleList, element!.id);
     rectangleList.forEach((item) => item.draw(canvas, 1));
     element?.draw(canvas, 1);
 
@@ -115,11 +110,22 @@ export function handleCanvas(canvas: HTMLCanvasElement) {
           textInput.style.fontSize = currentFontSize - 1 + "px";
         }
       });
-      document.addEventListener("click", () => {
+      function listenerDBClick() {
         element!.insertText(textInput);
         element?.draw(canvas, 1);
         textInput.remove();
-      });
+
+        document.removeEventListener("click", listenerDBClick);
+      }
+      document.addEventListener("click", listenerDBClick);
+
+      // function listenerKeyDown (event:KeyboardEvent) {
+      //   if (event.key === "Enter") {
+      //     element!.insertText(textInput);
+      //     element?.draw(canvas, 1);
+      //     textInput.remove();
+      //   }
+      // }
       textInput.addEventListener("keydown", (event) => {
         if (event.key === "Enter") {
           element!.insertText(textInput);

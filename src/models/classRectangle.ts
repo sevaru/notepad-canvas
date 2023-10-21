@@ -12,6 +12,7 @@ export class Rectangle {
   borderRadius: number;
   contextText: string;
   contextTextFontSize: string;
+  activeInput: boolean;
   constructor(x: number, y: number, id: number, color: number[]) {
     this.id = id;
     this._startX = x - 80;
@@ -24,6 +25,7 @@ export class Rectangle {
     this.borderRadius = 30;
     this.contextText = "";
     this.contextTextFontSize = "";
+    this.activeInput = false;
   }
   getInfoRectangle = () => {
     const info = {
@@ -78,7 +80,6 @@ export class Rectangle {
       ctx.fillStyle = "white";
       if (handlerLengthLine(ctx, this.contextText)!.length > 0) {
         let heightLine = this._startY + 45;
-        console.log(handlerLengthLine(ctx, this.contextText));
         for (let item of handlerLengthLine(ctx, this.contextText)!) {
           ctx.fillText(item, this._startX + 15, heightLine);
           heightLine += 18;
