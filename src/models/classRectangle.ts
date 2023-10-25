@@ -1,5 +1,17 @@
 import { handlerLengthLine } from "../helpers/handlerLengthLine";
-
+export let colorList = [
+  [134, 166, 157],
+  [242, 178, 99],
+  [242, 198, 194],
+  [242, 133, 133],
+  [137, 217, 157],
+  [22, 72, 115],
+];
+export function getRandomColor() {
+  let color = colorList[Math.floor(Math.random() * colorList.length)];
+  colorList = colorList.filter((item) => item !== color);
+  return color;
+}
 export class Rectangle {
   id: number;
   _startX: number;
@@ -13,18 +25,28 @@ export class Rectangle {
   contextText: string;
   contextTextFontSize: string;
   activeInput: boolean;
-  constructor(x: number, y: number, id: number, color: number[]) {
+  intialValueX: number;
+  initialValueY: number;
+  constructor(
+    x: number,
+    y: number,
+    id: number,
+    text?: string,
+    textSize?: string
+  ) {
     this.id = id;
+    this.intialValueX = x;
+    this.initialValueY = y;
     this._startX = x - 80;
     this._endX = x + 80;
     this._startY = y - 90;
     this._endY = y + 90;
     this._width = 160;
     this._height = 180;
-    this.color = color;
+    this.color = getRandomColor();
     this.borderRadius = 30;
-    this.contextText = "";
-    this.contextTextFontSize = "";
+    this.contextText = text ?? "";
+    this.contextTextFontSize = textSize ?? "";
     this.activeInput = false;
   }
   getInfoRectangle = () => {
@@ -42,7 +64,6 @@ export class Rectangle {
   };
   draw = (canvas: HTMLCanvasElement, opacity: number) => {
     let ctx = canvas.getContext("2d")!;
-
     ctx.beginPath();
     ctx.fillStyle = `rgb(${this.color},${opacity})`;
     ctx.moveTo(this._startX + this.borderRadius, this._startY);

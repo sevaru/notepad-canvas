@@ -3,15 +3,9 @@ import { findRectangleByCoordinates } from "../../helpers/findRectangleByCordina
 import { resizeWindowBrowser } from "../../helpers/resizeWindowBrowser";
 import { createTextArea } from "../../helpers/createTextArea";
 import { sortRectangleList } from "../../helpers/sortRectangleList";
-let rectangleList: Rectangle[] = [];
-let colorList = [
-  [134, 166, 157],
-  [242, 178, 99],
-  [242, 198, 194],
-  [242, 133, 133],
-  [137, 217, 157],
-  [22, 72, 115],
-];
+import { rectangleList } from "./../../store/index";
+// let rectangleList: Rectangle[] = [];
+
 export function handleCanvas(canvas: HTMLCanvasElement) {
   resizeWindowBrowser(canvas, rectangleList);
   window.addEventListener("resize", () =>
@@ -20,7 +14,7 @@ export function handleCanvas(canvas: HTMLCanvasElement) {
 
   let activeMove = false;
   let idElement: number;
-  let id = 0;
+  // let id = 0;
   function handleMouseDown(event: MouseEvent) {
     let rectangle = rectangleList.find((item) => item.id === idElement);
     rectangle!.wipeOf(canvas);
@@ -55,7 +49,7 @@ export function handleCanvas(canvas: HTMLCanvasElement) {
     // rectangleList.find((item) => item.id === idElement)?.draw(canvas, 1);
     // rectangleList.find((item) => item.id === idElement)?.draw(canvas, 1);
     // rectangleList = sortRectangleList(rectangleList, idElement);
-    rectangleList = sortRectangleList(rectangleList, idElement);
+    sortRectangleList(rectangleList, idElement);
     rectangleList.forEach((item) => item.draw(canvas, 1));
     rectangleList.find((item) => item.id === idElement)?.draw(canvas, 1);
     if (
@@ -64,13 +58,13 @@ export function handleCanvas(canvas: HTMLCanvasElement) {
         .flag &&
       !activeMove
     ) {
-      let color = colorList[Math.floor(Math.random() * colorList.length)];
-      colorList = colorList.filter((item) => item !== color);
+      // let color = colorList[Math.floor(Math.random() * colorList.length)];
+      // updateColorList(color);
       let rectangle = new Rectangle(
         event.offsetX,
         event.offsetY,
-        (id += 1),
-        color
+        rectangleList.length + 1
+        // color
       );
       rectangleList.push(rectangle);
       rectangle.draw(canvas, 1);
