@@ -11,8 +11,6 @@ interface CreateTextAreaTypes {
 export function createTextArea({
   startX,
   startY,
-  endX,
-  endY,
   width,
   height,
   color,
