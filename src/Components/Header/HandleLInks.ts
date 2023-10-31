@@ -38,13 +38,15 @@ export function handleLinks(
           });
         }
         let res: any = await parseJsonFile(filee);
+        console.log(1);
         let rectangle: Rectangle[] = res.map((item: any) => {
           return new Rectangle(
             item.x,
             item.y,
             item.id,
             item.text,
-            item.textSize
+            item.textSize,
+            item._color
           );
         });
         rectangleList.forEach((item) => item.wipeOf(canvas));
@@ -55,9 +57,9 @@ export function handleLinks(
         drawAllRectangle(rectangleList, canvas, 1);
         file.value = "";
         file.removeEventListener("change", handleInputChange);
+        link.removeEventListener("click", handleDownload);
       }
       file!.addEventListener("change", handleInputChange);
-      link.removeEventListener("click", handleDownload);
     }
   });
 }
