@@ -1,9 +1,8 @@
-export interface Rectangle {
-  id: number | null;
-  startX: null | number;
-  endX: null | number;
-  startY: null | number;
-  endY: null | number;
-  width: number;
-  height: number;
+export interface RectangleInfoForSaveTypes {
+  id: number;
+  x: number;
+  y: number;
+  color: number[];
+  text: string;
+  textSize: number;
 }

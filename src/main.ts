@@ -12,12 +12,14 @@ document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
   <a class="link-save">
   <img src="/src/images/Aniket-Suvarna-Box-Regular-Bx-save.svg"/>
   </a>
+  <div class="download-container">
   <a class="link-download">
   <input type="file" id="file" class="fileUpload"></input>
   <label for="file">
   <img src="/src/images/Icons8-Windows-8-Folders-Downloads-Folder.512.png"/>
   </label>
   </a>
+  </div>
   </div>
   </div>
   </header>
@@ -31,6 +33,7 @@ document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
 handleCanvas(document.querySelector<HTMLCanvasElement>("canvas")!);
 handleLinks(
   document.querySelector<HTMLLinkElement>(".link-save")!,
-  document.querySelector<HTMLLinkElement>(".link-download")!,
+  document.querySelector<HTMLDivElement>(".download-container")!,
   document.querySelector<HTMLCanvasElement>("canvas")!
+  // document.querySelector(".fileUpload")!
 );

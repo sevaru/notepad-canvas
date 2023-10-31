@@ -156,6 +156,10 @@ legend {
   width: 100%;
   height: 100%;
 }
+.download-container {
+  width: 25px;
+  height: 25px;
+}
 .link-download {
   cursor: pointer;
   width: 25px;

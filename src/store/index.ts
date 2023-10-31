@@ -1,2 +1,5 @@
-import { Rectangle } from "../models/classRectangle";
+import { Rectangle } from "./../models/classRectangle";
 export let rectangleList: Rectangle[] = [];
+export function rectangleListClear() {
+  rectangleList = [];
+}

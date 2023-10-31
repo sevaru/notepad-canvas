@@ -20,7 +20,7 @@ export class Rectangle {
   _endY: number;
   _width: number;
   _height: number;
-  color: number[];
+  _color: number[];
   borderRadius: number;
   contextText: string;
   contextTextFontSize: string;
@@ -32,7 +32,8 @@ export class Rectangle {
     y: number,
     id: number,
     text?: string,
-    textSize?: string
+    textSize?: string,
+    color?: number[]
   ) {
     this.id = id;
     this.intialValueX = x;
@@ -43,7 +44,7 @@ export class Rectangle {
     this._endY = y + 90;
     this._width = 160;
     this._height = 180;
-    this.color = getRandomColor();
+    this._color = color || getRandomColor();
     this.borderRadius = 30;
     this.contextText = text ?? "";
     this.contextTextFontSize = textSize ?? "";
@@ -57,7 +58,7 @@ export class Rectangle {
       endY: this._endY,
       width: this._width,
       height: this._height,
-      color: this.color,
+      color: this._color,
       contextText: this.contextText,
     };
     return info;
@@ -65,7 +66,7 @@ export class Rectangle {
   draw = (canvas: HTMLCanvasElement, opacity: number) => {
     let ctx = canvas.getContext("2d")!;
     ctx.beginPath();
-    ctx.fillStyle = `rgb(${this.color},${opacity})`;
+    ctx.fillStyle = `rgb(${this._color},${opacity})`;
     ctx.moveTo(this._startX + this.borderRadius, this._startY);
     ctx.arcTo(
       this._startX + this._width,
@@ -131,7 +132,7 @@ export class Rectangle {
     this._endY = y + 90;
     this._width = 160;
     this._height = 180;
-    this.color = this.color;
+    this._color = this._color;
   };
 
   wipeOf = (canvas: HTMLCanvasElement) => {

@@ -33,7 +33,7 @@ export function handleCanvas(canvas: HTMLCanvasElement) {
     if (currentElement.flag) {
       canvas.addEventListener("mousemove", handleMouseDown);
       activeMove = true;
-      drawAllRectangle(rectangleList, canvas);
+      drawAllRectangle(rectangleList, canvas, 1);
     } else {
       console.log("Вы находитесь не на элементе");
     }
@@ -41,11 +41,8 @@ export function handleCanvas(canvas: HTMLCanvasElement) {
   canvas.addEventListener("mouseup", (event) => {
     event.preventDefault();
     sortRectangleList(rectangleList, currentElement.id);
-    drawAllRectangle(rectangleList, canvas);
+    drawAllRectangle(rectangleList, canvas, 1);
     findRectangleById(currentElement.id)?.draw(canvas, 1);
-    // rectangleList
-    //   .find((item) => item.id === currentElement.id)
-    //   ?.draw(canvas, 1);
     if (
       rectangleList.length < 6 &&
       !findRectangleByCoordinates(rectangleList, event.offsetX, event.offsetY)
@@ -63,14 +60,13 @@ export function handleCanvas(canvas: HTMLCanvasElement) {
     canvas.removeEventListener("mousemove", handleMouseDown);
     activeMove = false;
   });
-  // DBCLICK///////////////////////////////////////////////////////
   canvas.addEventListener("dblclick", (event) => {
     const canvasContainer = document.querySelector(".canvas-сontainer");
     let element = findRectangleById(currentElement.id)!;
     element.activeInput = true;
     const textInput = createTextArea(element.getInfoRectangle());
     element.removeText(canvas, textInput.value);
-    drawAllRectangle(rectangleList, canvas);
+    drawAllRectangle(rectangleList, canvas, 1);
     element.draw(canvas, 1);
 
     if (element && rectangleList.length <= 6) {
@@ -91,7 +87,6 @@ export function handleCanvas(canvas: HTMLCanvasElement) {
         element.insertText(textInput);
         element.draw(canvas, 1);
         textInput.remove();
-
         document.removeEventListener("click", listenerDBClick);
       }
       document.addEventListener("click", listenerDBClick);
