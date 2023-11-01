@@ -1,5 +1,5 @@
 import { RectangleInfoForSaveTypes } from "./../../types/index";
-import { Rectangle } from "./../../models/classRectangle";
+import { Rectangle, setColorList } from "./../../models/classRectangle";
 import { rectangleList, rectangleListClear } from "../../store";
 import { createListForSave } from "../../helpers/createListForSave";
 import { drawAllRectangle } from "../../helpers/drawAllRectangle";
@@ -21,24 +21,26 @@ export function handleLinks(
     }
   });
   download.addEventListener("click", () => {
+    setColorList();
     let link = document.querySelector<HTMLLinkElement>(".link-download")!;
     link.addEventListener("click", handleDownload);
     function handleDownload() {
-      let file = document.querySelector(".fileUpload")! as HTMLInputElement;
-      async function handleInputChange(event: any) {
-        let files = event.target.files;
-        let filee = files[0];
-        async function parseJsonFile(filee: any) {
+      let input = document.querySelector(".fileUpload")! as HTMLInputElement;
+      async function handleInputChange(event: Event) {
+        let files = (<HTMLInputElement>event.target).files!;
+        let file = files[0];
+        async function parseJsonFile(
+          file: File
+        ): Promise<RectangleInfoForSaveTypes[]> {
           return new Promise((resolve, reject) => {
             const fileReader = new FileReader();
-            fileReader.onload = (event: any) =>
-              resolve(JSON.parse(event.target.result));
+            fileReader.onload = (event: ProgressEvent<FileReader>) =>
+              resolve(JSON.parse(event.target?.result as string));
             fileReader.onerror = (error) => reject(error);
-            fileReader.readAsText(filee);
+            fileReader.readAsText(file);
           });
         }
-        let res: any = await parseJsonFile(filee);
-        console.log(1);
+        let res: RectangleInfoForSaveTypes[] = await parseJsonFile(file);
         let rectangle: Rectangle[] = res.map((item: any) => {
           return new Rectangle(
             item.x,
@@ -46,7 +48,11 @@ export function handleLinks(
             item.id,
             item.text,
             item.textSize,
-            item._color
+            item.color,
+            item.startX,
+            item.endX,
+            item.startY,
+            item.endY
           );
         });
         rectangleList.forEach((item) => item.wipeOf(canvas));
@@ -55,11 +61,11 @@ export function handleLinks(
           rectangleList.push(item);
         });
         drawAllRectangle(rectangleList, canvas, 1);
-        file.value = "";
-        file.removeEventListener("change", handleInputChange);
+        input.value = "";
+        input.removeEventListener("change", handleInputChange);
         link.removeEventListener("click", handleDownload);
       }
-      file!.addEventListener("change", handleInputChange);
+      input!.addEventListener("change", handleInputChange);
     }
   });
 }

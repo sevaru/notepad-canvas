@@ -4,7 +4,6 @@ export function sortRectangleList(rectangleList: Rectangle[], id: number) {
   if (indexToFind === -1 || indexToFind === rectangleList.length - 1) {
     return rectangleList;
   }
-  console.log("ididid", id);
   const foundElement = rectangleList[indexToFind];
   for (let i = indexToFind; i < rectangleList.length - 1; i++) {
     rectangleList[i] = rectangleList[i + 1];

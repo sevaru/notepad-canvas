@@ -4,8 +4,10 @@ export function createListForSave(rectangleList: Rectangle[]) {
   const newList = rectangleList.map((item) => {
     let result = {
       id: item.id,
-      x: item.intialValueX,
-      y: item.initialValueY,
+      startX: item._startX,
+      endX: item._endX,
+      startY: item._startY,
+      endY: item._endY,
       color: item._color,
       text: item.contextText,
       textSize: item.contextTextFontSize,

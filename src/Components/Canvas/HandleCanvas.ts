@@ -43,6 +43,7 @@ export function handleCanvas(canvas: HTMLCanvasElement) {
     sortRectangleList(rectangleList, currentElement.id);
     drawAllRectangle(rectangleList, canvas, 1);
     findRectangleById(currentElement.id)?.draw(canvas, 1);
+
     if (
       rectangleList.length < 6 &&
       !findRectangleByCoordinates(rectangleList, event.offsetX, event.offsetY)
@@ -60,7 +61,7 @@ export function handleCanvas(canvas: HTMLCanvasElement) {
     canvas.removeEventListener("mousemove", handleMouseDown);
     activeMove = false;
   });
-  canvas.addEventListener("dblclick", (event) => {
+  canvas.addEventListener("dblclick", () => {
     const canvasContainer = document.querySelector(".canvas-сontainer");
     let element = findRectangleById(currentElement.id)!;
     element.activeInput = true;

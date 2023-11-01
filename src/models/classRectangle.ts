@@ -7,11 +7,28 @@ export let colorList = [
   [137, 217, 157],
   [22, 72, 115],
 ];
-export function getRandomColor() {
-  let color = colorList[Math.floor(Math.random() * colorList.length)];
-  colorList = colorList.filter((item) => item !== color);
-  return color;
+export function setColorList() {
+  colorList = [
+    [134, 166, 157],
+    [242, 178, 99],
+    [242, 198, 194],
+    [242, 133, 133],
+    [137, 217, 157],
+    [22, 72, 115],
+  ];
 }
+function getColor(color: number[] | null = null): number[] {
+  if (!color) {
+    let colorRandom = colorList[Math.floor(Math.random() * colorList.length)];
+    colorList = colorList.filter(
+      (item) => String(item) !== String(colorRandom)
+    );
+    return colorRandom;
+  }
+  colorList = colorList.filter((item) => String(item) !== String(color));
+  return color!;
+}
+
 export class Rectangle {
   id: number;
   _startX: number;
@@ -25,26 +42,27 @@ export class Rectangle {
   contextText: string;
   contextTextFontSize: string;
   activeInput: boolean;
-  intialValueX: number;
-  initialValueY: number;
+
   constructor(
     x: number,
     y: number,
     id: number,
     text?: string,
     textSize?: string,
-    color?: number[]
+    color?: number[],
+    startX?: number,
+    endX?: number,
+    startY?: number,
+    endY?: number
   ) {
     this.id = id;
-    this.intialValueX = x;
-    this.initialValueY = y;
-    this._startX = x - 80;
-    this._endX = x + 80;
-    this._startY = y - 90;
-    this._endY = y + 90;
+    this._startX = startX ?? x - 80;
+    this._endX = endX ?? x + 80;
+    this._startY = startY ?? y - 90;
+    this._endY = endY ?? y + 90;
     this._width = 160;
     this._height = 180;
-    this._color = color || getRandomColor();
+    this._color = getColor(color);
     this.borderRadius = 30;
     this.contextText = text ?? "";
     this.contextTextFontSize = textSize ?? "";
