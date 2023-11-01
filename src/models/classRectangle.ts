@@ -163,8 +163,8 @@ export class Rectangle {
     this.contextTextFontSize = textInput.style.fontSize;
     textInput.focus();
   };
-  removeText = (canvas: HTMLCanvasElement, textInput: string) => {
-    textInput = this.contextText;
+  removeText = (canvas: HTMLCanvasElement, textInput: HTMLTextAreaElement) => {
+    textInput.value = this.contextText;
     this.contextText = "";
     this.wipeOf(canvas);
     this.draw(canvas, 1);

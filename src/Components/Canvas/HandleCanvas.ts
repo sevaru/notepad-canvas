@@ -66,7 +66,7 @@ export function handleCanvas(canvas: HTMLCanvasElement) {
     let element = findRectangleById(currentElement.id)!;
     element.activeInput = true;
     const textInput = createTextArea(element.getInfoRectangle());
-    element.removeText(canvas, textInput.value);
+    element.removeText(canvas, textInput);
     drawAllRectangle(rectangleList, canvas, 1);
     element.draw(canvas, 1);
 
