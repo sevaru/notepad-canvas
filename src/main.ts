@@ -1,4 +1,5 @@
 import "./style.css";
+import "./reset.css";
 import { handleCanvas } from "./Components/Canvas/HandleCanvas";
 import { handleLinks } from "./Components/Header/HandleLInks";
 document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
@@ -16,7 +17,7 @@ document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
   <a class="link-download">
   <input type="file" id="file" class="fileUpload"></input>
   <label for="file">
-  <img src="/src/images/Icons8-Windows-8-Folders-Downloads-Folder.512.png"/>
+  <img src="/src/images/Icons8-Windows-8-Folders-Downloads-Folder.512.svg"/>
   </label>
   </a>
   </div>
@@ -35,5 +36,4 @@ handleLinks(
   document.querySelector<HTMLLinkElement>(".link-save")!,
   document.querySelector<HTMLDivElement>(".download-container")!,
   document.querySelector<HTMLCanvasElement>("canvas")!
-  // document.querySelector(".fileUpload")!
 );
