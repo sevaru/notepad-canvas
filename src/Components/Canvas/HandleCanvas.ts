@@ -8,6 +8,7 @@ import { rectangleList } from "./../../store/index";
 import { findRectangleById } from "../../helpers/findRectangleById";
 
 export function handleCanvas(canvas: HTMLCanvasElement) {
+  //version 1.0
   let activeMove = false;
   let currentElement: { id: number; flag: boolean };
   resizeWindowBrowser(canvas, rectangleList);
