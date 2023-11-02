@@ -7,7 +7,7 @@ var E=Object.defineProperty;var b=(i,n,t)=>n in i?E(i,n,{enumerable:!0,configura
   <div class="header-title"><h1>Canvas Notepad</h1></div>
   <div class="header-links">
   <a class="link-save">
-  <img src="/save.svg"/>
+  <img src="save.svg"/>
   </a>
   <div class="download-container">
   <a class="link-download">
