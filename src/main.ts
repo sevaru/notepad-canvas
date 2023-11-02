@@ -11,13 +11,13 @@ document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
   <div class="header-title"><h1>Canvas Notepad</h1></div>
   <div class="header-links">
   <a class="link-save">
-  <img src="/src/images/Aniket-Suvarna-Box-Regular-Bx-save.svg"/>
+  <img src="/save.svg"/>
   </a>
   <div class="download-container">
   <a class="link-download">
   <input type="file" id="file" class="fileUpload"></input>
   <label for="file">
-  <img src="/src/images/Icons8-Windows-8-Folders-Downloads-Folder.512.svg"/>
+  <img src="download.svg"/>
   </label>
   </a>
   </div>
