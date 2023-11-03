@@ -4,4 +4,11 @@ Hello, here is a project using canvas. Here you can click to add a note, double-
 ## Getting Started 	&#10071;	&#10071;	&#10071;
 Clone the repository
 ```
-git clone https://github.com/AleksandrSmirnov92/elevatorTestProjectVue.git
+https://github.com/AleksandrSmirnov92/notepad-canvas.git
+```
+Run these commands
+```
+npm i
+npm run dev
+---
+Open [http://localhost:5173](http://localhost:5173) with your browser to see the result.
