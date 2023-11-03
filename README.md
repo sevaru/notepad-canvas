@@ -17,4 +17,4 @@ Open [http://localhost:5173](http://localhost:5173) with your browser to see the
 ## Laptop screen
 ![2023-11-03_11-59-05](https://github.com/AleksandrSmirnov92/notepad-canvas/assets/83553039/6afbed1d-2d24-4fe8-bae1-f149cac437ac)
 ## Video Elevator 
-
+https://github.com/AleksandrSmirnov92/notepad-canvas/assets/83553039/ffac50d5-a319-4353-bad0-8e2e00bc767c
