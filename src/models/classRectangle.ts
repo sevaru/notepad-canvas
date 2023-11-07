@@ -31,13 +31,13 @@ function getColor(color: number[] | null = null): number[] {
 
 export class Rectangle {
   id: number;
-  _startX: number;
-  _endX: number;
-  _startY: number;
-  _endY: number;
-  _width: number;
-  _height: number;
-  _color: number[];
+  startX: number;
+  endX: number;
+  startY: number;
+  endY: number;
+  width: number;
+  height: number;
+  color: number[];
   borderRadius: number;
   contextText: string;
   contextTextFontSize: string;
@@ -56,13 +56,13 @@ export class Rectangle {
     endY?: number
   ) {
     this.id = id;
-    this._startX = startX ?? x - 80;
-    this._endX = endX ?? x + 80;
-    this._startY = startY ?? y - 90;
-    this._endY = endY ?? y + 90;
-    this._width = 160;
-    this._height = 180;
-    this._color = getColor(color);
+    this.startX = startX ?? x - 80;
+    this.endX = endX ?? x + 80;
+    this.startY = startY ?? y - 90;
+    this.endY = endY ?? y + 90;
+    this.width = 160;
+    this.height = 180;
+    this.color = getColor(color);
     this.borderRadius = 30;
     this.contextText = text ?? "";
     this.contextTextFontSize = textSize ?? "";
@@ -70,13 +70,13 @@ export class Rectangle {
   }
   getInfoRectangle = () => {
     const info = {
-      startX: this._startX,
-      endX: this._endX,
-      startY: this._startY,
-      endY: this._endY,
-      width: this._width,
-      height: this._height,
-      color: this._color,
+      startX: this.startX,
+      endX: this.endX,
+      startY: this.startY,
+      endY: this.endY,
+      width: this.width,
+      height: this.height,
+      color: this.color,
       contextText: this.contextText,
     };
     return info;
@@ -84,34 +84,34 @@ export class Rectangle {
   draw = (canvas: HTMLCanvasElement, opacity: number) => {
     let ctx = canvas.getContext("2d")!;
     ctx.beginPath();
-    ctx.fillStyle = `rgb(${this._color},${opacity})`;
-    ctx.moveTo(this._startX + this.borderRadius, this._startY);
+    ctx.fillStyle = `rgb(${this.color},${opacity})`;
+    ctx.moveTo(this.startX + this.borderRadius, this.startY);
     ctx.arcTo(
-      this._startX + this._width,
-      this._startY,
-      this._startX + this._width,
-      this._startY + this._height,
+      this.startX + this.width,
+      this.startY,
+      this.startX + this.width,
+      this.startY + this.height,
       this.borderRadius
     );
     ctx.arcTo(
-      this._startX + this._width,
-      this._startY + this._height,
-      this._startX,
-      this._startY + this._height,
+      this.startX + this.width,
+      this.startY + this.height,
+      this.startX,
+      this.startY + this.height,
       this.borderRadius
     );
     ctx.arcTo(
-      this._startX,
-      this._startY + this._height,
-      this._startX,
-      this._startY,
+      this.startX,
+      this.startY + this.height,
+      this.startX,
+      this.startY,
       this.borderRadius
     );
     ctx.arcTo(
-      this._startX,
-      this._startY,
-      this._startX + this._width,
-      this._startY,
+      this.startX,
+      this.startY,
+      this.startX + this.width,
+      this.startY,
       this.borderRadius
     );
     ctx.fill();
@@ -119,9 +119,9 @@ export class Rectangle {
       ctx.font = `${this.contextTextFontSize} Helvetica`;
       ctx.fillStyle = "white";
       if (handlerLengthLine(ctx, this.contextText)!.length > 0) {
-        let heightLine = this._startY + 45;
+        let heightLine = this.startY + 45;
         for (let item of handlerLengthLine(ctx, this.contextText)!) {
-          ctx.fillText(item, this._startX + 15, heightLine);
+          ctx.fillText(item, this.startX + 15, heightLine);
           heightLine += 18;
         }
       }
@@ -134,28 +134,28 @@ export class Rectangle {
       ctx.font = `${this.contextTextFontSize} Helvetica`;
       ctx.fillStyle = "white";
       if (handlerLengthLine(ctx, this.contextText)!.length > 0) {
-        let heightLine = this._startY + 45;
+        let heightLine = this.startY + 45;
         console.log(handlerLengthLine(ctx, this.contextText));
         for (let item of handlerLengthLine(ctx, this.contextText)!) {
-          ctx.fillText(item, this._startX + 15, heightLine);
+          ctx.fillText(item, this.startX + 15, heightLine);
           heightLine += 18;
         }
       }
     }
   };
   updated = (x: number, y: number) => {
-    this._startX = x - 80;
-    this._endX = x + 80;
-    this._startY = y - 90;
-    this._endY = y + 90;
-    this._width = 160;
-    this._height = 180;
-    this._color = this._color;
+    this.startX = x - 80;
+    this.endX = x + 80;
+    this.startY = y - 90;
+    this.endY = y + 90;
+    this.width = 160;
+    this.height = 180;
+    this.color = this.color;
   };
 
   wipeOf = (canvas: HTMLCanvasElement) => {
     let ctx = canvas.getContext("2d")!;
-    ctx.clearRect(this._startX, this._startY, 160, 180);
+    ctx.clearRect(this.startX, this.startY, 160, 180);
   };
 
   insertText = (textInput: HTMLTextAreaElement) => {

@@ -4,11 +4,11 @@ export function createListForSave(rectangleList: Rectangle[]) {
   const newList = rectangleList.map((item) => {
     let result = {
       id: item.id,
-      startX: item._startX,
-      endX: item._endX,
-      startY: item._startY,
-      endY: item._endY,
-      color: item._color,
+      startX: item.startX,
+      endX: item.endX,
+      startY: item.startY,
+      endY: item.endY,
+      color: item.color,
       text: item.contextText,
       textSize: item.contextTextFontSize,
     };
