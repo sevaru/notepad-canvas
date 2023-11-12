@@ -41,9 +41,9 @@ export class Rectangle {
   borderRadius: number;
   contextText: string;
   contextTextFontSize: string;
-  activeInput: boolean;
 
   constructor(
+    private canvas: HTMLCanvasElement,
     x: number,
     y: number,
     id: number,
@@ -66,8 +66,9 @@ export class Rectangle {
     this.borderRadius = 30;
     this.contextText = text ?? "";
     this.contextTextFontSize = textSize ?? "";
-    this.activeInput = false;
   }
+
+  // for canvas
   getInfoRectangle = () => {
     const info = {
       startX: this.startX,
@@ -81,8 +82,11 @@ export class Rectangle {
     };
     return info;
   };
-  draw = (canvas: HTMLCanvasElement, opacity: number) => {
-    let ctx = canvas.getContext("2d")!;
+
+  draw(options?: { opacity: number }): void {
+    const opacity = options?.opacity ?? 1;
+
+    let ctx = this.canvas.getContext("2d")!;
     ctx.beginPath();
     ctx.fillStyle = `rgb(${this.color},${opacity})`;
     ctx.moveTo(this.startX + this.borderRadius, this.startY);
@@ -128,22 +132,8 @@ export class Rectangle {
     }
     ctx.closePath();
   };
-  drawText = (canvas: HTMLCanvasElement) => {
-    let ctx = canvas.getContext("2d")!;
-    if (this.contextText) {
-      ctx.font = `${this.contextTextFontSize} Helvetica`;
-      ctx.fillStyle = "white";
-      if (handlerLengthLine(ctx, this.contextText)!.length > 0) {
-        let heightLine = this.startY + 45;
-        console.log(handlerLengthLine(ctx, this.contextText));
-        for (let item of handlerLengthLine(ctx, this.contextText)!) {
-          ctx.fillText(item, this.startX + 15, heightLine);
-          heightLine += 18;
-        }
-      }
-    }
-  };
-  updated = (x: number, y: number) => {
+
+  update = (x: number, y: number) => {
     this.startX = x - 80;
     this.endX = x + 80;
     this.startY = y - 90;
@@ -153,20 +143,17 @@ export class Rectangle {
     this.color = this.color;
   };
 
-  wipeOf = (canvas: HTMLCanvasElement) => {
+  clear = (canvas: HTMLCanvasElement) => {
     let ctx = canvas.getContext("2d")!;
     ctx.clearRect(this.startX, this.startY, 160, 180);
   };
 
-  insertText = (textInput: HTMLTextAreaElement) => {
+  copyFromTextArea = (textInput: HTMLTextAreaElement) => {
     this.contextText = textInput.value;
     this.contextTextFontSize = textInput.style.fontSize;
-    textInput.focus();
   };
-  removeText = (canvas: HTMLCanvasElement, textInput: HTMLTextAreaElement) => {
-    textInput.value = this.contextText;
+
+  removeText(): void {
     this.contextText = "";
-    this.wipeOf(canvas);
-    this.draw(canvas, 1);
   };
 }

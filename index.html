@@ -1,13 +1,43 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + TS</title>
-  </head>
-  <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.ts"></script>
-  </body>
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vite + TS</title>
+</head>
+
+<body>
+  <div>
+    <div class="notepad-container">
+      <header class="header-container">
+        <div class="header">
+          <div class="header-empty"></div>
+          <div class="header-title">
+            <h1>Canvas Notepad</h1>
+          </div>
+          <div class="header-links">
+            <a class="link-save">
+              <img src="save.svg" />
+            </a>
+            <div class="download-container">
+              <a class="link-download">
+                <input type="file" id="file" class="fileUpload"></input>
+                <label for="file">
+                  <img src="download.svg" />
+                </label>
+              </a>
+            </div>
+          </div>
+        </div>
+      </header>
+      <div class="canvas-container">
+        <canvas id="canvas"></canvas>
+      </div>
+    </div>
+  </div>
+  <script type="module" src="/src/main.ts"></script>
+</body>
+
 </html>

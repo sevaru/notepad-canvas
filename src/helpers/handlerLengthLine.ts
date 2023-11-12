@@ -1,4 +1,10 @@
-export function handlerLengthLine(ctx: any, text: string) {
+
+// разбивает строку на строки в зависимости от длинны текста
+// splitToLines 
+/**
+ * @description Разбивает строку на подстроки если не помещается в стикер 
+ */
+export function handlerLengthLine(ctx: CanvasRenderingContext2D, text: string): string[] {
   const maxWidth = 130;
   const dividedStr: string[] = [];
   let newStr = text;
